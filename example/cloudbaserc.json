@@ -1,0 +1,14 @@
+{
+  "envId": "env-jsdqwaon",
+  "framework": {
+    "plugins": {
+      "static": {
+        "use": "@cloudbase/framework-plugin-website",
+        "inputs": {
+          "outputPath": "build",
+          "cloudPath": "/components/react-ui-mode-cc"
+        }
+      }
+    }
+  }
+}
