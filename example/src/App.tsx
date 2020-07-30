@@ -1,10 +1,23 @@
 import React from 'react'
 
-import { ExampleComponent } from '@xiaoxili/react-ui-mode-cc'
+import withUiMode from '@xiaoxili/react-ui-mode-cc'
 import '@xiaoxili/react-ui-mode-cc/dist/index.css'
 
-const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+interface Props {
+  isPCMode?: boolean
+  uiMode?: boolean
+}
+class App extends React.Component<Props, {}> {
+  render() {
+    const { isPCMode, uiMode } = this.props
+
+    console.log('uiMode :>> ', isPCMode, uiMode);
+
+    return (
+      <div>1234</div>
+    )
+  }
 }
 
-export default App
+
+export default withUiMode({})(App)

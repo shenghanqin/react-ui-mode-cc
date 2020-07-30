@@ -1,5 +1,4 @@
 import * as React from 'react'
-import styles from './styles.module.css'
 
 const userAgent = window.navigator.userAgent
 const userAgentLowerCase = userAgent.toLocaleLowerCase()
@@ -13,7 +12,7 @@ const isWeixin = () => {
 const mqlMedia = window.matchMedia('(orientation: portrait)')
 const isPadWeixin = isWeixin() && userAgentLowerCase.includes('iad')
 
-function onMatchMediaChange(mql = window.matchMedia('(orientation: portrait)')) {
+function onMatchMediaChange(mql:any = mqlMedia) {
   if (mql.matches) {
     //竖屏
     // console.log('此时竖屏')
@@ -27,13 +26,15 @@ function onMatchMediaChange(mql = window.matchMedia('(orientation: portrait)')) 
 }
 
 // 输出当前屏幕模式
-const getUiMode = (uiMode = '', mql: MediaQueryList) => {
+const getUiMode = (uiMode = '', mql: MediaQueryList | MediaQueryListEvent) => {
   if (uiMode) return uiMode
   if (isPadWeixin) return 'mobile'
 
   if (!('onorientationchange' in window)) return 'pc'
+  console.log('mql :>> ', mql);
 
   let status = onMatchMediaChange(mql)
+  console.log('status :>> ', status);
   let width = status === 'portrait' ? Math.min(window.innerWidth, window.innerHeight) : Math.max(window.innerWidth, window.innerHeight)
 
   if (width > 1040) return 'pc'
@@ -51,16 +52,21 @@ const getIsPcMode = (uiMode: string) => uiMode === 'pc'
  * @param {*} Cmp
  * @returns
  */
-interface Props {
-  text: string
+interface UIProps {
+  isPCMode?: boolean
+}
+
+interface UIState {
+  uiMode: string
+  isPCMode: boolean
 }
 interface OptionsProps {
-  widthMedia: number
+  widthMedia?: number
 }
 
 export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
-  return class WithUIRem extends React.Component {
-    constructor(props: Props) {
+  return class WithUIRem extends React.Component<UIProps, UIState> {
+    constructor(props: UIProps) {
       super(props)
       let uiMode = getUiMode('', mqlMedia)
       let isPCMode = getIsPcMode(uiMode)
@@ -72,8 +78,29 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
         isPCMode: isPCMode,
       }
     }
-    render() 
-    {
+
+    componentDidMount() {
+      mqlMedia.addListener(this.changeUiMode)
+    }
+
+    componentWillUnmount() {
+      mqlMedia.removeListener(this.changeUiMode)
+    }
+
+    changeUiMode = (event: MediaQueryListEvent) => {
+      console.log('"change" :>> ', event);
+      const { target = {} } = event
+      console.log('mql :>> ', target);
+      let newUiMode = getUiMode('', event)
+      if (newUiMode !== this.state.uiMode) {
+        this.setState({
+          isPCMode: getIsPcMode(newUiMode),
+          uiMode: newUiMode
+        })
+      }
+    }
+
+    render() {
       return <Cmp {...this.state} {...this.props} />
     }
   }
@@ -82,8 +109,4 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
 
 export default (options: OptionsProps) => {
   return (Cmp: React.ComponentType) => withUiMode(Cmp, options)
-}
-
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
 }
