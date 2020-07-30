@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/packages/react-ui-mode-cc/static/css/main.b693b373.chunk.css",
+    "main.js": "/packages/react-ui-mode-cc/static/js/main.16918a29.chunk.js",
+    "main.js.map": "/packages/react-ui-mode-cc/static/js/main.16918a29.chunk.js.map",
+    "runtime-main.js": "/packages/react-ui-mode-cc/static/js/runtime-main.952a1c2c.js",
+    "runtime-main.js.map": "/packages/react-ui-mode-cc/static/js/runtime-main.952a1c2c.js.map",
+    "static/js/2.4cfe8986.chunk.js": "/packages/react-ui-mode-cc/static/js/2.4cfe8986.chunk.js",
+    "static/js/2.4cfe8986.chunk.js.map": "/packages/react-ui-mode-cc/static/js/2.4cfe8986.chunk.js.map",
+    "index.html": "/packages/react-ui-mode-cc/index.html",
+    "precache-manifest.db1fedaf0fae7fd151abcfce15a6bdff.js": "/packages/react-ui-mode-cc/precache-manifest.db1fedaf0fae7fd151abcfce15a6bdff.js",
+    "service-worker.js": "/packages/react-ui-mode-cc/service-worker.js",
+    "static/css/main.b693b373.chunk.css.map": "/packages/react-ui-mode-cc/static/css/main.b693b373.chunk.css.map",
+    "static/js/2.4cfe8986.chunk.js.LICENSE.txt": "/packages/react-ui-mode-cc/static/js/2.4cfe8986.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.952a1c2c.js",
+    "static/js/2.4cfe8986.chunk.js",
+    "static/css/main.b693b373.chunk.css",
+    "static/js/main.16918a29.chunk.js"
+  ]
+}

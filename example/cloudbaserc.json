@@ -5,8 +5,9 @@
       "static": {
         "use": "@cloudbase/framework-plugin-website",
         "inputs": {
+          "buildCommand": "npm run build",
           "outputPath": "build",
-          "cloudPath": "/components/react-ui-mode-cc"
+          "cloudPath": "/package/react-ui-mode-cc"
         }
       }
     }
