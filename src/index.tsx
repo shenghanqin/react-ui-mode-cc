@@ -33,6 +33,8 @@ const getUiMode = (uiMode = '', mql: MediaQueryList | MediaQueryListEvent) => {
   // if (isPadWeixin) return 'mobile'
 
   if (!('onorientationchange' in window)) return 'pc'
+
+  // if (!('onchange' in mqlMedia)) return 'mobile'
   console.log('mql :>> ', mql);
 
   let status = onMatchMediaChange(mql)
@@ -74,7 +76,7 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
       let isPCMode = getIsPcMode(uiMode)
       const { widthMedia } = options
       console.log(1)
-      // console.log('mqlMedia', mqlMedia)
+      console.log('mqlMedia', mqlMedia, 'onchange' in mqlMedia, mqlMedia.onchange)
       console.log('widthMedia :>> ', widthMedia);
       console.log('2 :>> ', 2);
       this.state = {
@@ -84,17 +86,23 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     componentDidMount() {
-      mqlMedia.addListener(this.changeUiMode)
+      if(('onchange' in mqlMedia)) {
+        mqlMedia.addListener(this.changeUiMode)
+      } else {
+        window.addEventListener('orientationchange', this.onOrientationChange)
+      }
     }
 
     componentWillUnmount() {
-      mqlMedia.removeListener(this.changeUiMode)
+      if ('onchange' in mqlMedia) {
+        mqlMedia.removeListener(this.changeUiMode)
+      } else {
+        window.removeEventListener('orientationchange', this.onOrientationChange)
+      }
     }
 
     changeUiMode = (event: MediaQueryListEvent) => {
       console.log('"change" :>> ', event);
-      const { target = {} } = event
-      console.log('mql :>> ', target);
       let newUiMode = getUiMode('', event)
       if (newUiMode !== this.state.uiMode) {
         this.setState({
@@ -102,6 +110,24 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
           uiMode: newUiMode
         })
       }
+    }
+
+    onOrientationChange = () => {
+
+      console.log('orientation :>> ', window.orientation);
+      setTimeout(() => {
+        let mqlNow = window.matchMedia('(orientation: portrait)')
+        console.log('mqlNow :>> ', mqlNow);
+        let newUiMode = getUiMode('', mqlNow)
+        console.log('newUiMode :>> ', newUiMode);
+        if (newUiMode !== this.state.uiMode) {
+          this.setState({
+            isPCMode: getIsPcMode(newUiMode),
+            uiMode: newUiMode
+          })
+        }
+        
+      }, 30);
     }
 
     render() {
