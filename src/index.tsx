@@ -1,4 +1,5 @@
 import * as React from 'react'
+import './constants.css';
 
 const userAgent = window.navigator.userAgent
 const userAgentLowerCase = userAgent.toLocaleLowerCase()
@@ -10,7 +11,7 @@ const isWeixin = () => {
 }
 
 const mqlMedia = window.matchMedia('(orientation: portrait)')
-const isPadWeixin = isWeixin() && userAgentLowerCase.includes('iad')
+const isPadWeixin = isWeixin() && userAgentLowerCase.includes('ipad')
 
 function onMatchMediaChange(mql:any = mqlMedia) {
   if (mql.matches) {
@@ -28,6 +29,7 @@ function onMatchMediaChange(mql:any = mqlMedia) {
 // 输出当前屏幕模式
 const getUiMode = (uiMode = '', mql: MediaQueryList | MediaQueryListEvent) => {
   if (uiMode) return uiMode
+  
   if (isPadWeixin) return 'mobile'
 
   if (!('onorientationchange' in window)) return 'pc'
