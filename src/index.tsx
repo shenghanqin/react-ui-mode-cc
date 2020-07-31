@@ -1,17 +1,17 @@
 import * as React from 'react'
 import './constants.css';
 
-const userAgent = window.navigator.userAgent
-const userAgentLowerCase = userAgent.toLocaleLowerCase()
+// const userAgent = window.navigator.userAgent
+// const userAgentLowerCase = userAgent.toLocaleLowerCase()
 
-const isWeixin = () => {
-  let result = userAgentLowerCase.match(/micromessenger/i)
-  let resultStr = Array.isArray(result) && result[0] ? result[0] : result
-  return resultStr === 'micromessenger'
-}
+// const isWeixin = () => {
+//   let result = userAgentLowerCase.match(/micromessenger/i)
+//   let resultStr = Array.isArray(result) && result[0] ? result[0] : result
+//   return resultStr === 'micromessenger'
+// }
 
 const mqlMedia = window.matchMedia('(orientation: portrait)')
-const isPadWeixin = isWeixin() && userAgentLowerCase.includes('ipad')
+// const isPadWeixin = isWeixin() && userAgentLowerCase.includes('ipad')
 
 function onMatchMediaChange(mql:any = mqlMedia) {
   if (mql.matches) {
@@ -30,7 +30,7 @@ function onMatchMediaChange(mql:any = mqlMedia) {
 const getUiMode = (uiMode = '', mql: MediaQueryList | MediaQueryListEvent) => {
   if (uiMode) return uiMode
   
-  if (isPadWeixin) return 'mobile'
+  // if (isPadWeixin) return 'mobile'
 
   if (!('onorientationchange' in window)) return 'pc'
   console.log('mql :>> ', mql);
@@ -73,8 +73,10 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
       let uiMode = getUiMode('', mqlMedia)
       let isPCMode = getIsPcMode(uiMode)
       const { widthMedia } = options
+      console.log(1)
+      // console.log('mqlMedia', mqlMedia)
       console.log('widthMedia :>> ', widthMedia);
-
+      console.log('2 :>> ', 2);
       this.state = {
         uiMode: uiMode,
         isPCMode: isPCMode,

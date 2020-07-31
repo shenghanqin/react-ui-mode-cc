@@ -6,11 +6,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  max-width: var(--xxl-max-body-width-center);
-  margin: 0 auto;
+  /* max-width: var(--xxl-max-body-width-center); */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.page-container {
+  max-width: var(--xxl-max-body-width-center);
+  margin: 0 auto;
+  padding: 10px;
 }
