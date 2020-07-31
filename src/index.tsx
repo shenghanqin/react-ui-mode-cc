@@ -1,31 +1,6 @@
 import * as React from 'react'
 import './constants.css';
 
-// const userAgent = window.navigator.userAgent
-// const userAgentLowerCase = userAgent.toLocaleLowerCase()
-
-// const isWeixin = () => {
-//   let result = userAgentLowerCase.match(/micromessenger/i)
-//   let resultStr = Array.isArray(result) && result[0] ? result[0] : result
-//   return resultStr === 'micromessenger'
-// }
-
-// const mqlMedia = window.matchMedia('(orientation: portrait)')
-// const isPadWeixin = isWeixin() && userAgentLowerCase.includes('ipad')
-
-// function onMatchMediaChange(mql:any = mqlMedia) {
-//   if (mql.matches) {
-//     //竖屏
-//     // console.log('此时竖屏')
-//     return 'portrait'
-//   } else {
-//     //横屏
-//     // console.log('此时横屏')
-//     return 'horizontal'
-//   }
-
-// }
-
 // 输出当前屏幕模式
 const getUiMode = (widthMediaString: string) => {
   
@@ -38,6 +13,12 @@ const getUiMode = (widthMediaString: string) => {
 const getIsPcMode = (uiMode: string) => uiMode === 'pc'
 
 const getWidthMediaString = (widthMedia: number) => `(max-width: ${widthMedia}px)`
+
+export const isPadWeixin = () => {
+  const userAgent = window.navigator.userAgent
+  const userAgentLowerCase = userAgent.toLocaleLowerCase()
+  return userAgentLowerCase.includes('micromessenger') && userAgentLowerCase.includes('ipad')
+}
 
 /**
  * rem适配, 适用于移动端适配
@@ -60,48 +41,42 @@ interface UIState {
   isPCMode: boolean
 }
 interface OptionsProps {
-  widthMedia?: number
+  widthMedia?: number,
+  /**
+   * iPad 微信使用 Mobile 模式
+   */
+  isPadWechatMobile?: boolean
 }
 
 export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
   return class WithUIRem extends React.Component<UIProps, UIState> {
     constructor(props: UIProps) {
       super(props)
-      // 恒定 pc
-      // 恒定 mobile
+      
       // 需要转换的
-      
-      
-      const { widthMedia = 1023 } = options
+      let { widthMedia = 1000, isPadWechatMobile = false } = options
       let widthMediaString = getWidthMediaString(widthMedia)
-      let widthMediaQuery = window.matchMedia(widthMediaString)
-      console.log('this.widthMediaString :>> ', widthMediaString)
-      console.log(1, widthMediaQuery)
       
       let uiMode = 'mobile'
       let isPCMode = false
       let isSingleMode = false
 
+      // 恒定 pc
       if (!('onorientationchange' in window)) {
         isSingleMode = true
         uiMode = 'pc'
         isPCMode = true
-      } else if (Math.max(window.innerWidth, window.innerHeight) < widthMedia) {
+      } else if (isPadWechatMobile && isPadWeixin()) {
+        isSingleMode = true
+      } else if (Math.max(window.screen.height, window.screen.width) < widthMedia) {
+        // 恒定 mobile
+        // ipad mini 竖屏的innnerWidth与innerHeight为 768x954，与期望的设备高有差异
         isSingleMode = true
       } else {
+        // 横竖屏切换的
         uiMode = getUiMode(widthMediaString)
-        // uiMode = getUiMode(mqlMedia)
         isPCMode = getIsPcMode(uiMode)
-        // console.log('mqlMedia', mqlMedia, 'onchange' in mqlMedia, mqlMedia.onchange)
-        // console.log('widthMedia :>> ', widthMedia);
-
-        // console.log('2 :>> ', 2);
-
-
       }
-
-      console.log('isSingleMode :>> ', isSingleMode);
-
 
       this.state = {
         isSingleMode,
@@ -113,47 +88,26 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     componentDidMount() {
-      // if(('onchange' in mqlMedia)) {
-      //   mqlMedia.addListener(this.changeUiMode)
-      // } else {
+      if (!this.state.isSingleMode) {
         window.addEventListener('orientationchange', this.onOrientationChange)
-      // }
+      }
     }
 
     componentWillUnmount() {
-      // if ('onchange' in mqlMedia) {
-      //   mqlMedia.removeListener(this.changeUiMode)
-      // } else {
+      if (!this.state.isSingleMode) {
         window.removeEventListener('orientationchange', this.onOrientationChange)
-      // }
-    }
-
-    changeUiMode = (event: MediaQueryListEvent) => {
-      console.log('"change" :>> ', event);
-      let newUiMode = getUiMode(this.state.widthMediaString)
-      if (newUiMode !== this.state.uiMode) {
-        this.setState({
-          isPCMode: getIsPcMode(newUiMode),
-          uiMode: newUiMode
-        })
       }
     }
 
     onOrientationChange = () => {
-
-      console.log('orientation :>> ', window.orientation);
       setTimeout(() => {
-        // let mqlNow = window.matchMedia('(orientation: portrait)')
-        // console.log('mqlNow :>> ', mqlNow);
         let newUiMode = getUiMode(this.state.widthMediaString)
-        console.log('newUiMode :>> ', newUiMode);
         if (newUiMode !== this.state.uiMode) {
           this.setState({
             isPCMode: getIsPcMode(newUiMode),
             uiMode: newUiMode
           })
         }
-        
       }, 30);
     }
 

@@ -41,6 +41,10 @@ class App extends React.Component<Props, {}> {
           <h2>当前屏幕模式</h2>
           {uiMode} ui
         </div>
+        <div onClick={this.copyToClipboard.bind(this, uiMode)}>
+          <h2>设备宽高</h2>
+          {window.innerWidth}x{window.innerHeight}
+        </div>
         <div>
           <h2>isPCMode：</h2>
           {isPCMode ? 'true' : 'false'}
@@ -51,4 +55,6 @@ class App extends React.Component<Props, {}> {
 }
 
 
-export default withUiMode({})(App)
+export default withUiMode({
+  isPadMobile: true
+})(App)
