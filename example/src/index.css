@@ -19,12 +19,8 @@ code {
     monospace;
 }
 
-/* .page-container {
+.page-container {
   max-width: var(--xxl-max-body-width-center);
   margin: 0 auto;
   padding: 10px;
-} */
-
-.main {
-  height: 2000px;
 }

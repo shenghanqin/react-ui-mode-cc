@@ -1,25 +1,22 @@
 import * as React from 'react'
-import './constants.css';
+import './constants.css'
 
 // 输出当前屏幕模式
-// const getUiMode = (widthMediaString: string) => {
+// const getUiMode = (widthModeString: string) => {
   
-//   let widthMediaQuery = window.matchMedia(widthMediaString)
-//   console.log('width,height', window.innerWidth, window.innerHeight)
-//   let uiMode = !widthMediaQuery.matches ? 'pc' : 'mobile'
-//   console.log('widthMediaString :>> ', widthMediaString, widthMediaQuery, '模式：', uiMode);
+//   let widthModeQuery = window.matchMedia(widthModeString)
+//   let uiMode = !widthModeQuery.matches ? 'pc' : 'mobile'
 //   return uiMode
 
 // }
+
 // 输出当前屏幕模式
-const getUiModeOrientation = (widthMedia: number) => {
-  console.log('newUiMode onOrientationChange:>> ', );
+const getUiModeOrientation = (widthMode: number) => {
   const compareWidth = window.orientation === 0 || window.orientation === 180
     ? Math.min(window.screen.height, window.screen.width)
     : Math.max(window.screen.height, window.screen.width)
 
-  const uiMode = compareWidth < widthMedia ? 'mobile' : 'pc'
-  console.log('uiMode :>> ', uiMode);
+  const uiMode = compareWidth < widthMode ? 'mobile' : 'pc'
   return uiMode
 
 }
@@ -33,7 +30,7 @@ export const isPadWeixin = () => {
 }
 
 interface OptionsProps {
-  widthMedia?: number,
+  widthMode?: number,
   /**
    * iPad 微信使用 Mobile 模式
    */
@@ -52,7 +49,7 @@ interface UIState {
   /**
    * 屏幕断点，默认为 1000px
    */
-  widthMedia: number,
+  widthMode: number,
   /**
    * 屏幕 UI 模式，值为 pc、mobile
    */
@@ -69,11 +66,10 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
       super(props)
       
       // 需要转换的
-      let { widthMedia = 1000, isPadWechatMobile = false } = options
+      let { widthMode = 1000, isPadWechatMobile = false } = options
       let uiMode = 'mobile'
       let isPCMode = false
       let isSingleMode = false
-      console.log('window.innerWidth :>> ', window.innerWidth, window.innerHeight);
 
       // 恒定 pc
       if (!('onorientationchange' in window)) {
@@ -82,18 +78,18 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
         isPCMode = true
       } else if (isPadWechatMobile && isPadWeixin()) {
         isSingleMode = true
-      } else if (Math.max(window.screen.height, window.screen.width) < widthMedia) {
+      } else if (Math.max(window.screen.height, window.screen.width) < widthMode) {
         // 恒定 mobile
         isSingleMode = true
       } else {
         // 横竖屏切换的
-        uiMode = getUiModeOrientation(widthMedia)
+        uiMode = getUiModeOrientation(widthMode)
         isPCMode = getIsPcMode(uiMode)
       }
 
       this.state = {
         isSingleMode,
-        widthMedia,
+        widthMode,
         uiMode: uiMode,
         isPCMode: isPCMode,
       }
@@ -112,8 +108,7 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     onOrientationChange = () => {
-      let newUiMode = getUiModeOrientation(this.state.widthMedia)
-      console.log('newUiMode :>> ', newUiMode, this.state.uiMode);
+      let newUiMode = getUiModeOrientation(this.state.widthMode)
       if (newUiMode !== this.state.uiMode) {
         this.setState({
           isPCMode: getIsPcMode(newUiMode),
@@ -123,7 +118,6 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     render() {
-      console.log('render window.innerWidth222 :>> ', window.innerWidth, window.innerHeight);
       return <Cmp {...this.state} {...this.props} />
     }
   }

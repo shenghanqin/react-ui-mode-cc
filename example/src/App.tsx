@@ -32,7 +32,7 @@ class App extends React.Component<Props, {}> {
     console.log('uiMode :>> ', isPCMode, uiMode);
 
     return (
-      <div className="page-container main">
+      <div className="page-container">
         <div onClick={this.copyToClipboard.bind(this, uaStr)}>
           <h2>当前设备标识符</h2>
           {uaStr}
@@ -56,6 +56,6 @@ class App extends React.Component<Props, {}> {
 
 
 export default withUiMode({
-  widthMedia: 1000
-  // isPadWechatMobile: true
+  widthMode: 1000
+  isPadWechatMobile: true
 })(App)
