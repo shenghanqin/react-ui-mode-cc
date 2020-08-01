@@ -1,20 +1,4 @@
 @import '../../constants.scss';
-/* 
-.page-mode-pc {
-  .page-container {
-    max-width: none;
-    width: $xxl-page-min-width-center;
-  }
-}
-
-@media (min-width: $xxl-page-max-width) {
-  .page-mode-pc {
-    .page-container {
-      width: $xxl-page-max-width-center;
-    }
-  }
-}
- */
 .footer {
   background: rgba(255, 255, 255, 0.8);
 }
@@ -22,6 +6,7 @@
 .footer-main {
   max-width: $xxl-max-body-width-center;
   padding: 30px 16px;
+  margin: 0 auto;
 }
 
 .footer-main .footer-logo {
