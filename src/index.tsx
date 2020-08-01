@@ -2,17 +2,29 @@ import * as React from 'react'
 import './constants.css';
 
 // 输出当前屏幕模式
-const getUiMode = (widthMediaString: string) => {
+// const getUiMode = (widthMediaString: string) => {
   
-  let widthMediaQuery = window.matchMedia(widthMediaString)
-  console.log('widthMediaString :>> ', widthMediaString, widthMediaQuery);
-  return !widthMediaQuery.matches ? 'pc' : 'mobile'
+//   let widthMediaQuery = window.matchMedia(widthMediaString)
+//   console.log('width,height', window.innerWidth, window.innerHeight)
+//   let uiMode = !widthMediaQuery.matches ? 'pc' : 'mobile'
+//   console.log('widthMediaString :>> ', widthMediaString, widthMediaQuery, '模式：', uiMode);
+//   return uiMode
+
+// }
+// 输出当前屏幕模式
+const getUiModeOrientation = (widthMedia: number) => {
+  console.log('newUiMode onOrientationChange:>> ', );
+  const compareWidth = window.orientation === 0 || window.orientation === 180
+    ? Math.min(window.screen.height, window.screen.width)
+    : Math.max(window.screen.height, window.screen.width)
+
+  const uiMode = compareWidth < widthMedia ? 'mobile' : 'pc'
+  console.log('uiMode :>> ', uiMode);
+  return uiMode
 
 }
 
 const getIsPcMode = (uiMode: string) => uiMode === 'pc'
-
-const getWidthMediaString = (widthMedia: number) => `(max-width: ${widthMedia}px)`
 
 export const isPadWeixin = () => {
   const userAgent = window.navigator.userAgent
@@ -20,26 +32,6 @@ export const isPadWeixin = () => {
   return userAgentLowerCase.includes('micromessenger') && userAgentLowerCase.includes('ipad')
 }
 
-/**
- * rem适配, 适用于移动端适配
- * @export
- * @param {*} Cmp
- * @returns
- */
-interface UIProps {
-  isPCMode?: boolean
-}
-
-interface UIState {
-  /**
-   * 单一模式，要么是pc，要么是Mobile
-   */
-  isSingleMode: boolean
-  widthMedia: number,
-  widthMediaString: string,
-  uiMode: string
-  isPCMode: boolean
-}
 interface OptionsProps {
   widthMedia?: number,
   /**
@@ -48,8 +40,28 @@ interface OptionsProps {
   isPadWechatMobile?: boolean
 }
 
-/* ipad 5th 1024x 768 */
-/* ipad 7th 1080x 810 */
+interface UIProps {
+  isPCMode?: boolean
+}
+
+interface UIState {
+  /**
+   * 单一模式。要么是pc，要么是Mobile
+   */
+  isSingleMode: boolean
+  /**
+   * 屏幕断点，默认为 1000px
+   */
+  widthMedia: number,
+  /**
+   * 屏幕 UI 模式，值为 pc、mobile
+   */
+  uiMode: string
+  /**
+   * 是否为 PC 模式
+   */
+  isPCMode: boolean
+}
 
 export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
   return class WithUIRem extends React.Component<UIProps, UIState> {
@@ -58,8 +70,6 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
       
       // 需要转换的
       let { widthMedia = 1000, isPadWechatMobile = false } = options
-      let widthMediaString = getWidthMediaString(widthMedia)
-      
       let uiMode = 'mobile'
       let isPCMode = false
       let isSingleMode = false
@@ -74,20 +84,16 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
         isSingleMode = true
       } else if (Math.max(window.screen.height, window.screen.width) < widthMedia) {
         // 恒定 mobile
-        // ipad mini 竖屏的innnerWidth与innerHeight为 768x954，与期望的设备高有差异
         isSingleMode = true
-        console.log('2 :>> ', 2);
       } else {
-        console.log('1 :>> ', 1);
         // 横竖屏切换的
-        uiMode = getUiMode(widthMediaString)
+        uiMode = getUiModeOrientation(widthMedia)
         isPCMode = getIsPcMode(uiMode)
       }
 
       this.state = {
         isSingleMode,
         widthMedia,
-        widthMediaString,
         uiMode: uiMode,
         isPCMode: isPCMode,
       }
@@ -106,34 +112,18 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     onOrientationChange = () => {
-      // console.log(window.orientation, window.innerWidth)
-       
-      // console.log('newUiMode onOrientationChange:>> ', );
-      // let compareWidth = window.orientation === 0 || window.orientation === 180
-      //   ? Math.min(window.screen.height, window.screen.width)
-      //   : Math.max(window.screen.height, window.screen.width)
-
-      // let newUiMode = compareWidth < this.state.widthMedia ? 'mobile' : 'pc'
-      // if (newUiMode !== this.state.uiMode) {
-      //   this.setState({
-      //     isPCMode: getIsPcMode(newUiMode),
-      //     uiMode: newUiMode
-      //   })
-      // }
-      setTimeout(() => {
-        let newUiMode = getUiMode(this.state.widthMediaString)
-        console.log('newUiMode :>> ', newUiMode, this.state.uiMode);
-        if (newUiMode !== this.state.uiMode) {
-          this.setState({
-            isPCMode: getIsPcMode(newUiMode),
-            uiMode: newUiMode
-          })
-        }
-      }, 30);
+      let newUiMode = getUiModeOrientation(this.state.widthMedia)
+      console.log('newUiMode :>> ', newUiMode, this.state.uiMode);
+      if (newUiMode !== this.state.uiMode) {
+        this.setState({
+          isPCMode: getIsPcMode(newUiMode),
+          uiMode: newUiMode
+        })
+      }
     }
 
     render() {
-      console.log('render window.innerWidth :>> ', window.innerWidth, window.innerHeight);
+      console.log('render window.innerWidth222 :>> ', window.innerWidth, window.innerHeight);
       return <Cmp {...this.state} {...this.props} />
     }
   }
