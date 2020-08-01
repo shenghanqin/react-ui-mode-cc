@@ -3,6 +3,7 @@ import React from 'react'
 import withUiMode from '@xiaoxili/react-ui-mode-cc'
 import '@xiaoxili/react-ui-mode-cc/dist/index.css'
 import * as clipboard from 'clipboard-polyfill/text'
+import Page from './components/page';
 
 interface Props {
   isPCMode?: boolean
@@ -32,7 +33,10 @@ class App extends React.Component<Props, {}> {
     console.log('uiMode :>> ', isPCMode, uiMode);
 
     return (
-      <div className={`page-container ${isPCMode ? 'com-mode-pc' : 'com-mode-mobile'}`}>
+      <Page
+        pageClassName={`page-container ${isPCMode ? 'com-mode-pc' : 'com-mode-mobile'}`}
+        title={'融合响应式设计 React 版 - 小溪里'}
+      >
         <div onClick={this.copyToClipboard.bind(this, uaStr)}>
           <h2>当前设备标识符</h2>
           {uaStr}
@@ -49,7 +53,7 @@ class App extends React.Component<Props, {}> {
           <h2>isPCMode：</h2>
           {isPCMode ? 'true' : 'false'}
         </div>
-      </div>
+      </Page>
     )
   }
 }
