@@ -32,7 +32,7 @@ class App extends React.Component<Props, {}> {
     console.log('uiMode :>> ', isPCMode, uiMode);
 
     return (
-      <div className="page-container">
+      <div className={`page-container ${isPCMode ? 'com-mode-pc' : 'com-mode-mobile'}`}>
         <div onClick={this.copyToClipboard.bind(this, uaStr)}>
           <h2>当前设备标识符</h2>
           {uaStr}
@@ -56,6 +56,8 @@ class App extends React.Component<Props, {}> {
 
 
 export default withUiMode({
+  // 区分模式的宽度
   widthMode: 1000,
+  // iPad 微信恒定为 Mobile UI
   isPadWechatMobile: true
 })(App)
