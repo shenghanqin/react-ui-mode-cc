@@ -37,11 +37,11 @@ class App extends React.Component<Props, {}> {
           <h2>当前设备标识符</h2>
           {uaStr}
         </div>
-        <div onClick={this.copyToClipboard.bind(this, uiMode)}>
+        <div>
           <h2>当前屏幕模式</h2>
           {uiMode} ui
         </div>
-        <div onClick={this.copyToClipboard.bind(this, uiMode)}>
+        <div>
           <h2>设备宽高</h2>
           {window.innerWidth}x{window.innerHeight}
         </div>
@@ -56,6 +56,6 @@ class App extends React.Component<Props, {}> {
 
 
 export default withUiMode({
-  widthMode: 1000
+  widthMode: 1000,
   isPadWechatMobile: true
 })(App)
