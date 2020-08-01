@@ -56,5 +56,5 @@ class App extends React.Component<Props, {}> {
 
 
 export default withUiMode({
-  isPadMobile: true
+  // isPadWechatMobile: true
 })(App)

@@ -14,7 +14,6 @@
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
-
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "cd example && npm run deploy"
   },

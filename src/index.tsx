@@ -48,6 +48,9 @@ interface OptionsProps {
   isPadWechatMobile?: boolean
 }
 
+/* ipad 5th 1024x 768 */
+/* ipad 7th 1080x 810 */
+
 export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
   return class WithUIRem extends React.Component<UIProps, UIState> {
     constructor(props: UIProps) {
@@ -60,6 +63,7 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
       let uiMode = 'mobile'
       let isPCMode = false
       let isSingleMode = false
+      console.log('window.innerWidth :>> ', window.innerWidth, window.innerHeight);
 
       // 恒定 pc
       if (!('onorientationchange' in window)) {
@@ -72,7 +76,9 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
         // 恒定 mobile
         // ipad mini 竖屏的innnerWidth与innerHeight为 768x954，与期望的设备高有差异
         isSingleMode = true
+        console.log('2 :>> ', 2);
       } else {
+        console.log('1 :>> ', 1);
         // 横竖屏切换的
         uiMode = getUiMode(widthMediaString)
         isPCMode = getIsPcMode(uiMode)
@@ -89,19 +95,34 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
 
     componentDidMount() {
       if (!this.state.isSingleMode) {
-        window.addEventListener('orientationchange', this.onOrientationChange)
+        window.addEventListener('orientationchange', this.onOrientationChange, false)
       }
     }
 
     componentWillUnmount() {
       if (!this.state.isSingleMode) {
-        window.removeEventListener('orientationchange', this.onOrientationChange)
+        window.removeEventListener('orientationchange', this.onOrientationChange, false)
       }
     }
 
     onOrientationChange = () => {
+      // console.log(window.orientation, window.innerWidth)
+       
+      // console.log('newUiMode onOrientationChange:>> ', );
+      // let compareWidth = window.orientation === 0 || window.orientation === 180
+      //   ? Math.min(window.screen.height, window.screen.width)
+      //   : Math.max(window.screen.height, window.screen.width)
+
+      // let newUiMode = compareWidth < this.state.widthMedia ? 'mobile' : 'pc'
+      // if (newUiMode !== this.state.uiMode) {
+      //   this.setState({
+      //     isPCMode: getIsPcMode(newUiMode),
+      //     uiMode: newUiMode
+      //   })
+      // }
       setTimeout(() => {
         let newUiMode = getUiMode(this.state.widthMediaString)
+        console.log('newUiMode :>> ', newUiMode, this.state.uiMode);
         if (newUiMode !== this.state.uiMode) {
           this.setState({
             isPCMode: getIsPcMode(newUiMode),
@@ -112,6 +133,7 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     render() {
+      console.log('render window.innerWidth :>> ', window.innerWidth, window.innerHeight);
       return <Cmp {...this.state} {...this.props} />
     }
   }
