@@ -13,8 +13,8 @@ import './constants.css'
 // 输出当前屏幕模式
 const getUiModeOrientation = (widthMode: number) => {
   const compareWidth = window.orientation === 0 || window.orientation === 180
-    ? Math.min(window.screen.height, window.screen.width)
-    : Math.max(window.screen.height, window.screen.width)
+    ? Math.min(window.screen.width, window.screen.height)
+    : Math.max(window.screen.width, window.screen.height)
 
   const uiMode = compareWidth < widthMode ? 'mobile' : 'pc'
   return uiMode
@@ -71,14 +71,15 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
       let isPCMode = false
       let isSingleMode = false
 
-      // 恒定 pc
-      if (!('onorientationchange' in window)) {
+      if (isPadWechatMobile && isPadWeixin()) {
+        // 恒定 mobile
+        isSingleMode = true
+      } else if (!('onorientationchange' in window) || Math.min(window.screen.width, window.screen.height) >= widthMode) {
+        // 恒定 pc
         isSingleMode = true
         uiMode = 'pc'
         isPCMode = true
-      } else if (isPadWechatMobile && isPadWeixin()) {
-        isSingleMode = true
-      } else if (Math.max(window.screen.height, window.screen.width) < widthMode) {
+      } else if (Math.max(window.screen.width, window.screen.height) < widthMode) {
         // 恒定 mobile
         isSingleMode = true
       } else {
