@@ -1,11 +1,17 @@
 import React from 'react'
-import './styles.css'
+import './styles.scss'
 
 export default class Footer extends React.Component {
+
+  static defaultProps = {
+    isPCMode: false,
+  }
+
   render() {
+    const { isPCMode } = this.props
     return (
       <footer className="footer">
-        <div className="footer-main">
+        <div className={`footer-main ${isPCMode ? 'footer-pc' : ''}`}>
           <a href='/' className="footer-logo">
             <h3>小溪里 xiaoxili.com</h3>
           </a>

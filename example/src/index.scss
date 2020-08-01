@@ -1,3 +1,5 @@
+@import './constants.scss';
+
 sub, sup {
   line-height: 0;
 }
@@ -65,8 +67,8 @@ html,body {
   background-color: #FAFAFA;
   font-size: 16px;
   line-height: 1.25;
-  width: 100%
-  height 100%
+  width: 100%;
+  height: 100%;
 
 }
 
@@ -81,7 +83,27 @@ code {
 }
 
 .page-container {
-  max-width: var(--xxl-max-body-width-center);
+  max-width: $xxl-max-body-width-center;
   margin: 0 auto;
   padding: 10px;
+}
+
+.page-container h2 {
+  font-size: 1em;
+  margin: 20px 0 10px;
+}
+
+.page-mode-pc {
+  .page-container {
+    max-width: none;
+    width: $xxl-page-min-width-center;
+  }
+}
+
+@media (min-width: $xxl-page-max-width) {
+  .page-mode-pc {
+    .page-container {
+      width: $xxl-page-max-width-center;
+    }
+  }
 }

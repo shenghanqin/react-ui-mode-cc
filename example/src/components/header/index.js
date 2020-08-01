@@ -1,5 +1,5 @@
 import React from 'react'
-import './styles.css'
+import './styles.scss'
 
 export default class Page extends React.Component {
   static defaultProps = {

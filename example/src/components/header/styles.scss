@@ -1,8 +1,11 @@
+@import '../../constants.scss';
+
+
 header {
   background: #E2EEFF;
 }
 .header-main {
-  max-width: 1200px;
+  max-width: $xxl-max-body-width-center;
   padding: 20px 16px;
   box-sizing: border-box;
   margin: 0 auto;
@@ -41,6 +44,11 @@ header {
   color: #6B8CC7;
 }
 
+.header-pc {
+  width: $xxl-page-min-width-center;
+  max-width: none;
+  padding: 20px 0;
+}
 
 .header-pc .logo {
   width: 195px;
@@ -53,4 +61,10 @@ header {
 
 .header-pc .main-nav a + a {
   margin-left: 52px;
+}
+
+@media (min-width: $xxl-page-max-width) {
+  .header-pc {
+    width: $xxl-page-max-width-center;
+  }
 }
