@@ -42,18 +42,15 @@ header {
 }
 
 
-@media (min-width: 1024px) {
+.header-pc .logo {
+  width: 195px;
+  height: 90px;
+}
 
-  .header-main .logo {
-    width: 195px;
-    height: 90px;
-  }
+.header-pc .main-nav a {
+  font-size: 24px;
+}
 
-  .header-main .main-nav a {
-    font-size: 24px;
-  }
-
-  .header-main .main-nav a + a {
-    margin-left: 52px;
-  }
+.header-pc .main-nav a + a {
+  margin-left: 52px;
 }

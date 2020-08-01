@@ -46,21 +46,22 @@ export default class Page extends React.Component {
   }
 
   render() {
-    const { title, description, keywords, meta, isShowHeader, isShowFooter } = this.props
+    const { title, description, keywords, meta, isShowHeader, isShowFooter, isPCMode } = this.props
+    console.log('page isPCMode :>> ', isPCMode);
     return (
       <Fragment>
         <DocumentMeta
           title={title || ''}
           description={description}
           keywords={keywords}
-          meta={meta}
+          {...meta}
         />
         {
-          isShowHeader && <Header />
+          isShowHeader && <Header isPCMode={isPCMode} />
         }
         {this.props.children}
         {
-          isShowFooter && <Footer />
+          isShowFooter && <Footer isPCMode={isPCMode} />
         }
       </Fragment>
     )

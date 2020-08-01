@@ -2,10 +2,17 @@ import React from 'react'
 import './styles.css'
 
 export default class Page extends React.Component {
+  static defaultProps = {
+    isPCMode: false,
+  }
+
   render() {
+    const { isPCMode } = this.props
+
+    console.log('header isPCMode :>> ', isPCMode);
     return (
       <header>
-        <div className="header-main">
+        <div className={`header-main ${isPCMode ? 'header-pc' : ''}`}>
           <h1 className="logo">
             <a href='/'>
               小溪里 xiaoxili.com

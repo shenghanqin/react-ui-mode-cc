@@ -30,12 +30,13 @@ class App extends React.Component<Props, {}> {
   render() {
     const { isPCMode, uiMode } = this.props
 
-    console.log('uiMode :>> ', isPCMode, uiMode);
+    console.log('render uiMode :>> ', isPCMode, uiMode);
 
     return (
       <Page
-        pageClassName={`page-container ${isPCMode ? 'com-mode-pc' : 'com-mode-mobile'}`}
+        pageClassName={`page-container ${isPCMode ? 'page-mode-pc' : 'page-mode-mobile'}`}
         title={'融合响应式设计 React 版 - 小溪里'}
+        isPCMode={isPCMode}
       >
         <div onClick={this.copyToClipboard.bind(this, uaStr)}>
           <h2>当前设备标识符</h2>
