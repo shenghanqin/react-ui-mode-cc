@@ -1,5 +1,6 @@
 import * as React from 'react'
 import './constants.css'
+let mqlMedia = window.matchMedia('(orientation: portrait)') 
 
 // 输出当前屏幕模式
 // const getUiMode = (widthModeString: string) => {
@@ -42,6 +43,7 @@ interface UIProps {
 }
 
 interface UIState {
+  orientation: string
   /**
    * 单一模式。要么是pc，要么是Mobile
    */
@@ -89,6 +91,7 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
       }
 
       this.state = {
+        orientation: '',
         isSingleMode,
         widthMode,
         uiMode: uiMode,
@@ -97,6 +100,7 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     componentDidMount() {
+      mqlMedia.addListener(this.changeUiMode)
       if (!this.state.isSingleMode) {
         window.addEventListener('orientationchange', this.onOrientationChange, false)
       }
@@ -106,7 +110,16 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
       if (!this.state.isSingleMode) {
         window.removeEventListener('orientationchange', this.onOrientationChange, false)
       }
+      mqlMedia.addListener(this.changeUiMode)
     }
+
+    changeUiMode = (mql: MediaQueryListEvent) => {
+      console.log('组件内 changeUiMode mql :>> ', mql);
+      console.log('matches :>> ', 'matches' in mql, '方向', mql.matches ? '竖屏' : '横屏');
+      this.setState({
+        orientation: mql.matches ? '竖屏' : '横屏'
+      })
+    } 
 
     onOrientationChange = () => {
       let newUiMode = getUiModeOrientation(this.state.widthMode)
