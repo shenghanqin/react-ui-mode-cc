@@ -1,12 +1,10 @@
 import * as React from 'react'
 import './constants.css'
+
 let mqlMedia = window.matchMedia('(orientation: portrait)') 
 
 // 输出当前屏幕模式
 const getUiMode = (mql: MediaQueryList | MediaQueryListEvent, widthMode: number) => {
-
-  console.log('方法内 matches :>> ', 'matches' in mql, '方向', mql.matches ? '竖屏' : '横屏');
-
   // 竖屏
   let isPortrait = mql.matches
 
@@ -18,10 +16,7 @@ const getUiMode = (mql: MediaQueryList | MediaQueryListEvent, widthMode: number)
   // 当屏幕宽与网页宽一致并且大于宽度断点，才认为是pc
   let uiMode = compareScreenWidth <= compareInnerWitdh + 150 && compareScreenWidth > widthMode ? 'pc' : 'mobile'
   
-  console.log('uiMode :>> ', compareScreenWidth, compareInnerWitdh, uiMode);
-
   return uiMode
-
 }
 
 const getIsPcMode = (uiMode: string) => uiMode === 'pc'
@@ -69,8 +64,6 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     constructor(props: UIProps) {
       super(props)
 
-      console.log('max', Math.max(window.screen.width, window.screen.height))
-      
       // 需要转换的
       let { widthMode = 1000, isPadWechatMobile = false } = options
       let uiMode = 'mobile'
@@ -94,7 +87,6 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
         isPCMode = getIsPcMode(uiMode)
       }
 
-      console.log('isSingleMode :>> ', isSingleMode);
       this.state = {
         orientation: '',
         isSingleMode,
@@ -105,10 +97,8 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     componentDidMount() {
-      console.log('this.state.isSingleMode :>> ', this.state.isSingleMode);
       if (!this.state.isSingleMode) {
         mqlMedia.addListener(this.changeUiMode)
-
       }
     }
 
@@ -119,8 +109,6 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     changeUiMode = (mqlEvent: MediaQueryListEvent) => {
-      console.log('组件内 mqlEvent :>> ', mqlEvent);
-      console.log('组件内 matches :>> ', 'matches' in mqlEvent, '方向', mqlEvent.matches ? '竖屏' : '横屏');
       const { uiMode, widthMode } = this.state
       // 屏幕切换后，宽高改变可能不会立即触发
       setTimeout(() => {
@@ -132,10 +120,8 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
             isPCMode: getIsPcMode(newUiMode)
           })
         }
-        
       }, 300);
     }
-
 
     render() {
       return <Cmp {...this.state} {...this.props} />

@@ -67,28 +67,22 @@ class App extends React.Component<Props, State> {
         isPCMode={isPCMode}
       >
         <div className="page-container">
+          <div>
+            <h2>当前屏幕模式</h2>
+            <p>uiMode：{uiMode}</p>
+            <p>isPCMode：{isPCMode ? 'true' : 'false'}</p>
+          </div>
+          <div>
+            <h2>设备属性</h2>
+            <p>屏幕方向：{orientation}</p>
+            <p>设备宽高：{window.screen.width}x{window.screen.height}</p>
+            <p>页面宽高 innerWidth：{window.innerWidth} innerHeight：{window.innerHeight}</p>
+          </div>
           <div onClick={this.copyToClipboard.bind(this, uaStr)}>
             <h2>当前设备 UserAgent（点击可复制）</h2>
             <div style={{ wordBreak: 'break-all' }}>{uaStr}</div>
           </div>
-          <div>
-            <h2>matchMedia 支持情况</h2>
-            <p>屏幕方向：{orientation}</p>
-            <p>addListener：{ 'addListener' in mqlMedia ? '支持' : '不支持'}</p>
-
-          </div>
-          <div>
-            <h2>设备宽高：{window.screen.width}x{window.screen.height}</h2>
-            <p>页面宽高 innerWidth：{window.innerWidth} innerHeight：{window.innerHeight}</p>
-          </div>
-          <div>
-            <h2>当前屏幕模式</h2>
-            {uiMode} ui
-          </div>
-          <div>
-            <h2>isPCMode：</h2>
-            {isPCMode ? 'true' : 'false'}
-          </div>
+          
         </div>
         <ToastContainer position="bottom-center" />
       </Page>

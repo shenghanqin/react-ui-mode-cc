@@ -141,14 +141,15 @@ $xxl-page-max-width-center: ($xxl-page-max-width - 40px);
 3. 若 `window.screen.width, window.screen.height` 的最大值也比 `widthMode` 宽度断点大，那就可以认为是 `PC` ，如 iPad Pro 12.9 寸。 
 4. 若 `window.screen.width, window.screen.height` 的最大值也比 `widthMode` 宽度断点还小，那就可以认为是 `Mobile`  
 5. 进入页面时，竖屏时以 `window.screen.width, window.screen.height` 中数值小的那个来判断，横屏中以 `window.screen.width, window.screen.height` 数值大的来判断，当宽度大于 `1000px` 时认为是 `PC` ，宽度小于 `1000px` 时，认定为 `Mobile` 。 
-   * iPad 微信 app 横屏“扫一扫”，会以“左聊天列表、右侧网页”的布局，此时宽度比预期的小 `320px`，应当认为是 `mobile`。
+   * 
 6. 横竖屏切换时，重复第 **5** 步的判断 
    * 方案一：监听 `window.matchMedia('(orientation: portrait)')`，目前测试这个方案比较理想
    * 方案二：监听 `onorientationchange` 及 `window.orientation`
 
 **备注：** 
 
-使用 `window.screen.width, window.screen.height` 来作为判断依据，会比 `window.innerWidth, window.innerHeight` 更好，因为 `window.innerWidth, window.innerHeight` 在各种设备上会去掉状态栏、地址栏的高度。 
+* iPad 微信 app 横屏“扫一扫”，会以“左聊天列表、右侧网页”的布局，此时宽度比预期的小 `320px`，应当认为是 `mobile`。
+* 在横竖屏切换后，需要加 `300ms` 延时，之后获取的 `innerWidth` 和 `innerHeight` 才是准确的。
 
 #### 源码地址 
 
