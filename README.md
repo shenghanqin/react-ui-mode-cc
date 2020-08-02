@@ -105,7 +105,9 @@ $xxl-page-max-width-center: ($xxl-page-max-width - 40px);
 ```
 ### 重要版本升级记录 
 
-* v0.1.1 将横竖屏切换监听改为 `window.matchMedia('(orientation: portrait)')`，并针对 iPad 上进行多次测试
+* v0.1.1 
+  * 将横竖屏切换监听改为 `window.matchMedia('(orientation: portrait)')`，并针对 iPad 上进行多次测试
+  * 删除 `constants.css` 调用
 * v0.1.0 首次上线，支持设置模块宽度、iPad 微信是否恒定为 Mobile UI 
 
 ## 原理解析 
@@ -131,7 +133,6 @@ $xxl-page-max-width-center: ($xxl-page-max-width - 40px);
 
 
 区分 Mobile UI 和 PC UI 的完整的判断逻辑如下： 
-
 1. 在 iPad 微信 App 上可设置强制显示 Mobile 效果 
 2. 笔记本电脑，不支持 `onorientationchange` 横竖屏切换的，就认定为 `PC`  
     * 不使用 `onRisize` 来监听网页的宽高，因为性能消耗大 
@@ -169,9 +170,7 @@ $max-body-width = 768px
 // Mobile 模式下的内容宽度 
 $max-body-width-center = $max-body-width - 40px 
 ```
-
-![](https://image-hosting.xiaoxili.com/img/20200730093122.png)
-
+![](https://image-hosting.xiaoxili.com/img/20200730093044.png)
 
 #### PC UI 效果中的优化 
 
@@ -191,9 +190,9 @@ $page-min-width-center = $page-min-width - 40px
 // PC 模式下大屏的宽度断点 
 $page-max-width = 1200px 
 // 大屏模式下的内容宽度 
-$page-max-width-center = $page-max-width - 40px 
+$page-max-width-center = $page-max-width - 40px
 ```
-![](https://image-hosting.xiaoxili.com/img/20200730093044.png)
+![](https://image-hosting.xiaoxili.com/img/20200730093122.png)
 
 ## License
 

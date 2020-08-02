@@ -1,5 +1,4 @@
 import * as React from 'react'
-import './constants.css'
 
 let mqlMedia = window.matchMedia('(orientation: portrait)') 
 
