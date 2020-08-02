@@ -6,14 +6,39 @@ import Page from './components/page';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+let mqlMedia = window.matchMedia('(orientation: portrait)') 
+
 interface Props {
   isPCMode?: boolean
   uiMode?: string
 }
+interface State {
+  orientation?: string
+}
 
 const uaStr = window.navigator.userAgent
 
-class App extends React.Component<Props, {}> {
+class App extends React.Component<Props, State> {
+  constructor(props: Props){
+    super(props)
+    this.state = {
+      orientation: mqlMedia.matches ? '竖屏' : '横屏'
+    }
+  }
+
+  // 横竖屏切换监听 
+  componentDidMount() {
+    mqlMedia.addListener(this.changeUiMode)
+  }
+  componentWillUnmount() {
+    mqlMedia.removeListener(this.changeUiMode)
+  }
+  changeUiMode = (mql: MediaQueryListEvent) => {
+    console.log('changeUiMode mql :>> ', mql);
+    this.setState({
+      orientation: mql.matches ? '竖屏' : '横屏'
+    })
+  } 
 
   notify = (str: string = '') => toast(str)
 
@@ -29,10 +54,10 @@ class App extends React.Component<Props, {}> {
     )
   }
 
+
   render() {
     const { isPCMode, uiMode } = this.props
-
-    console.log('render uiMode :>> ', isPCMode, uiMode);
+    const { orientation } = this.state
 
     return (
       <Page
@@ -46,12 +71,18 @@ class App extends React.Component<Props, {}> {
             <div style={{ wordBreak: 'break-all' }}>{uaStr}</div>
           </div>
           <div>
-            <h2>当前屏幕模式</h2>
-            {uiMode} ui
+            <h2>matchMedia 支持情况</h2>
+            <p>屏幕方向：{orientation}</p>
+            <p>addListener：{ 'addListener' in mqlMedia ? '支持' : '不支持'}</p>
+
           </div>
           <div>
-            <h2>设备宽高</h2>
-            {window.innerWidth}x{window.innerHeight}
+            <h2>设备宽高：{window.screen.width}x{window.screen.height}</h2>
+            <p>页面宽高 innerWidth：{window.innerWidth} innerHeight：{window.innerHeight}</p>
+          </div>
+          <div>
+            <h2>当前屏幕模式</h2>
+            {uiMode} ui
           </div>
           <div>
             <h2>isPCMode：</h2>
