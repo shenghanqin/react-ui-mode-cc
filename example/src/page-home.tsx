@@ -100,5 +100,5 @@ export default withUiMode({
   // 区分模式的宽度
   widthMode: 1000,
   // iPad 微信恒定为 Mobile UI
-  isPadWechatMobile: true
+  // isPadWechatMobile: true
 })(App)

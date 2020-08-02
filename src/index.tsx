@@ -12,11 +12,16 @@ import './constants.css'
 
 // 输出当前屏幕模式
 const getUiModeOrientation = (widthMode: number) => {
+  // 微信扫码后的双屏界面
   const compareWidth = window.orientation === 0 || window.orientation === 180
     ? Math.min(window.screen.width, window.screen.height)
     : Math.max(window.screen.width, window.screen.height)
 
-  const uiMode = compareWidth < widthMode ? 'mobile' : 'pc'
+  const compareInnerWidth = window.orientation === 0 || window.orientation === 180
+    ? Math.min(window.innerWidth, window.innerHeight)
+    : Math.max(window.innerWidth, window.innerHeight)
+
+  const uiMode = compareInnerWidth === compareWidth && compareWidth > widthMode ? 'pc' : 'mobile'
   return uiMode
 
 }
