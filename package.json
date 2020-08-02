@@ -1,10 +1,14 @@
 {
   "name": "@xiaoxili/react-ui-mode-cc",
-  "version": "0.1.0",
+  "version": "0.1.1-beta.2",
+  "private": false,
   "description": "融合响应式设计的 React 版本实现，具体请访问：https://www.xiaoxili.com",
   "author": "https://github.com/shenghanqin/",
   "license": "MIT",
-  "repository": "https://github.com/shenghanqin/react-ui-mode-cc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shenghanqin/react-ui-mode-cc.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
@@ -53,5 +57,13 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/shenghanqin/react-ui-mode-cc/issues"
+  },
+  "homepage": "https://www.xiaoxili.com/packages/react-ui-mode-cc",
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {}
 }
