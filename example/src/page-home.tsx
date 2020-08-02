@@ -34,8 +34,6 @@ class App extends React.Component<Props, State> {
     mqlMedia.removeListener(this.changeUiMode)
   }
   changeUiMode = (mql: MediaQueryListEvent) => {
-    console.log('页面内 changeUiMode mql :>> ', mql);
-    console.log('页面内 matches :>> ', 'matches' in mql, '方向', mql.matches ? '竖屏' : '横屏');
     this.setState({
       orientation: mql.matches ? '竖屏' : '横屏'
     })
@@ -44,7 +42,7 @@ class App extends React.Component<Props, State> {
   notify = (str: string = '') => toast(str)
 
   copyToClipboard = (str: string | undefined = '') => {
-    console.log('str', str)
+    console.log('copy text', str)
     clipboard.writeText(str).then(
       () => {
         this.notify('复制成功')
