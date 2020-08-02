@@ -84,46 +84,29 @@ export default withUiMode({
 
 基本原理：在不同的 UI 模式内的变量设置 
 
-#### CSS 变量的方式 
-
-```css
-:root{ 
-  /* Mobile 模式下页面最大宽  */ 
-  --xxl-max-body-width: 768px; 
-  /* Mobile 模式下的内容宽度  */ 
-  --xxl-max-body-width-center: calc(var(--xxl-max-body-width) - 40px); 
-  /* PC 模式下小屏的宽度断点  */ 
-  --xxl-page-min-width: 1000px; 
-  /* PC 小屏模式下的内容宽度  */ 
-  --xxl-page-min-width-center: calc(var(--xxl-page-min-width) - 40px); 
-  /* PC 模式下大屏的宽度断点  */ 
-  --xxl-page-max-width: 1200px; 
-  /* PC 大屏模式下的内容宽度  */ 
-  --xxl-page-max-width-center: calc(var(--xxl-page-max-width) - 40px); 
-} 
-```
 #### 预处理的 CSS 变量示例 
 
 可以使用 Stylus、LESS、SCSS 来设置 
 
-```stylus
-// Mobile 模式下页面最大宽  
-@xxl-max-body-width: 768px; 
-// Mobile 模式下的内容宽度  
-@xxl-max-body-width-center: calc(@xxl-max-body-width - 40px); 
-// PC 模式下小屏的宽度断点  
-@xxl-page-min-width: 1000px; 
-// PC 小屏模式下的内容宽度  
-@xxl-page-min-width-center: calc(@xxl-page-min-width - 40px); 
-// PC 模式下大屏的宽度断点  
-@xxl-page-max-width: 1200px; 
-// PC 大屏模式下的内容宽度  
-@xxl-page-max-width-content: calc(@xxl-page-max-width - 40px); 
+```scss
+// Mobile 模式下页面最大宽 
+$xxl-max-body-width: 768px;
+// Mobile 模式下的内容宽度 
+$xxl-max-body-width-center: ($xxl-max-body-width - 40px);
+
+// PC 模式下小屏的宽度断点 
+$xxl-page-min-width: 1000px;
+// PC 小屏模式下的内容宽度 
+$xxl-page-min-width-center: ($xxl-page-min-width - 40px);
+// PC 模式下大屏的宽度断点 
+$xxl-page-max-width: 1200px;
+// PC 大屏模式下的内容宽度 
+$xxl-page-max-width-center: ($xxl-page-max-width - 40px);
 ```
 ### 重要版本升级记录 
 
-
-* v1.0.0 首次上线，支持设置模块宽度、iPad 微信是否恒定为 Mobile UI 
+* v0.1.1 将横竖屏切换监听改为 `window.matchMedia('(orientation: portrait)')`，并针对 iPad 上进行多次测试
+* v0.1.0 首次上线，支持设置模块宽度、iPad 微信是否恒定为 Mobile UI 
 
  
 
@@ -155,10 +138,13 @@ export default withUiMode({
 2. 笔记本电脑，不支持 `onorientationchange` 横竖屏切换的，就认定为 `PC`  
     * 不使用 `onRisize` 来监听网页的宽高，因为性能消耗大 
     * 并且当浏览器拖动小了，支持左右滚动 
-1. 若 `window.screen.width, window.screen.height` 的最大值也比 `widthMode` 宽度断点大，那就可以认为是 `PC` ，如 iPad Pro 12.9 寸。 
-2. 若 `window.screen.width, window.screen.height` 的最大值也比 `widthMode` 宽度断点还小，那就可以认为是 `Mobile`  
-3. 进入页面时，竖屏时以 `window.screen.width, window.screen.height` 中数值小的那个来判断，横屏中以 `window.screen.width, window.screen.height` 数值大的来判断，当宽度大于 `1000px` 时认为是 `PC` ，宽度小于 `1000px` 时，认定为 `Mobile` 。 
-4. 横竖屏切换时，重复第 **5** 步的判断 
+3. 若 `window.screen.width, window.screen.height` 的最大值也比 `widthMode` 宽度断点大，那就可以认为是 `PC` ，如 iPad Pro 12.9 寸。 
+4. 若 `window.screen.width, window.screen.height` 的最大值也比 `widthMode` 宽度断点还小，那就可以认为是 `Mobile`  
+5. 进入页面时，竖屏时以 `window.screen.width, window.screen.height` 中数值小的那个来判断，横屏中以 `window.screen.width, window.screen.height` 数值大的来判断，当宽度大于 `1000px` 时认为是 `PC` ，宽度小于 `1000px` 时，认定为 `Mobile` 。 
+   * iPad 微信 app 横屏“扫一扫”，会以“左聊天列表、右侧网页”的布局，此时宽度比预期的小 `320px`，应当认为是 `mobile`。
+6. 横竖屏切换时，重复第 **5** 步的判断 
+   * 方案一：监听 `window.matchMedia('(orientation: portrait)')`，目前测试这个方案比较理想
+   * 方案二：监听 `onorientationchange` 及 `window.orientation`
 
 **备注：** 
 

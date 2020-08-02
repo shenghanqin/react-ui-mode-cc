@@ -5,6 +5,8 @@ let mqlMedia = window.matchMedia('(orientation: portrait)')
 // 输出当前屏幕模式
 const getUiMode = (mql: MediaQueryList | MediaQueryListEvent, widthMode: number) => {
 
+  console.log('方法内 matches :>> ', 'matches' in mql, '方向', mql.matches ? '竖屏' : '横屏');
+
   // 竖屏
   let isPortrait = mql.matches
 
@@ -14,7 +16,7 @@ const getUiMode = (mql: MediaQueryList | MediaQueryListEvent, widthMode: number)
   let compareInnerWitdh = isPortrait ? Math.min(window.innerWidth, window.innerHeight) : Math.max(window.innerWidth, window.innerHeight)
 
   // 当屏幕宽与网页宽一致并且大于宽度断点，才认为是pc
-  let uiMode = compareScreenWidth === compareInnerWitdh && compareScreenWidth > widthMode ? 'pc' : 'mobile'
+  let uiMode = compareScreenWidth <= compareInnerWitdh + 150 && compareScreenWidth > widthMode ? 'pc' : 'mobile'
   
   console.log('uiMode :>> ', compareScreenWidth, compareInnerWitdh, uiMode);
 
@@ -118,16 +120,20 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
 
     changeUiMode = (mqlEvent: MediaQueryListEvent) => {
       console.log('组件内 mqlEvent :>> ', mqlEvent);
-      console.log('组件内 mqlEvent.matches :>> ', mqlEvent.matches);
+      console.log('组件内 matches :>> ', 'matches' in mqlEvent, '方向', mqlEvent.matches ? '竖屏' : '横屏');
       const { uiMode, widthMode } = this.state
-      let newUiMode = getUiMode(mqlEvent, widthMode)
-
-      if (newUiMode !== uiMode) {
-        this.setState({
-          uiMode: newUiMode,
-          isPCMode: getIsPcMode(newUiMode)
-        })
-      }
+      // 屏幕切换后，宽高改变可能不会立即触发
+      setTimeout(() => {
+        let newUiMode = getUiMode(mqlEvent, widthMode)
+  
+        if (newUiMode !== uiMode) {
+          this.setState({
+            uiMode: newUiMode,
+            isPCMode: getIsPcMode(newUiMode)
+          })
+        }
+        
+      }, 300);
     }
 
 
