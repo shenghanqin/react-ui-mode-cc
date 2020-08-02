@@ -47,7 +47,7 @@ export default class App extends React.Component<Props, {}> {
     const { isPCMode, uiMode } = this.props 
     console.log('uiMode :>> ', isPCMode, uiMode); 
     return ( 
-      <div className={`page-container ${isPCMode ? 'com-mode-pc' : 'com-mode-mobile'}`}> 
+      <div className={`page-container ${isPCMode ? 'page-mode-pc' : 'page-mode-mobile'}`}> 
         <div> 
           <h2>当前屏幕模式</h2> 
           {uiMode} ui 
@@ -108,8 +108,6 @@ $xxl-page-max-width-center: ($xxl-page-max-width - 40px);
 * v0.1.1 将横竖屏切换监听改为 `window.matchMedia('(orientation: portrait)')`，并针对 iPad 上进行多次测试
 * v0.1.0 首次上线，支持设置模块宽度、iPad 微信是否恒定为 Mobile UI 
 
- 
-
 ## 原理解析 
 
 ### **依据设备横竖屏及宽高特点** 
@@ -117,7 +115,7 @@ $xxl-page-max-width-center: ($xxl-page-max-width - 40px);
 |设备 |网页宽高 |UI 模式 |
 |:----|:----|:----:|:----|:----:|:----|
 |手机 iPhone11 pro max |414x896 |Mobile |
-|iPad mini 7.9 寸 |1024x768 |Mobile |
+|iPad mini 7.9 寸 |1024x768 |横屏 PC、竖屏 Mobile|
 |ipad 10.2 寸 |1080x810 |横屏 PC、竖屏 Mobile |
 |iPad Air 10.5 寸 |1112 x 834 |横屏 PC、竖屏 Mobile |
 |iPad Pro 11 寸 |1194x834 |横屏 PC、竖屏 Mobile |
