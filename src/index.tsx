@@ -57,6 +57,8 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
   return class WithUIRem extends React.Component<UIProps, UIState> {
     constructor(props: UIProps) {
       super(props)
+
+      console.log('max', Math.max(window.screen.width, window.screen.height))
       
       // 需要转换的
       let { widthMode = 1000, isPadWechatMobile = false } = options
