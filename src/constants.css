@@ -1,3 +1,5 @@
+/* 仅用作示例 */
+/* css媒体变量支持属性内，但不支持设置在媒体查询上 */
 :root{
   /* Mobile 模式下页面最大宽  */
   --xxl-max-body-width: 768px;
@@ -5,11 +7,11 @@
   --xxl-max-body-width-center: calc(var(--xxl-max-body-width) - 40px);
 
   /* PC 模式下小屏的宽度断点  */
-  --xxl-page-min-width: 1040px;
+  --xxl-page-min-width: 1000px;
   /* PC 小屏模式下的内容宽度  */
-  --xxl-page-min-width-center: calc(var(--xxl-page-min-width) - 80px);
+  --xxl-page-min-width-center: calc(var(--xxl-page-min-width) - 40px);
   /* PC 模式下大屏的宽度断点  */
-  --xxl-page-max-width: 1220px;
+  --xxl-page-max-width: 1200px;
   /* PC 大屏模式下的内容宽度  */
-  --xxl-page-max-width-center: calc(var(--xxl-page-max-width) - 60px);
+  --xxl-page-max-width-center: calc(var(--xxl-page-max-width) - 40px);
 }
