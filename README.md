@@ -113,7 +113,7 @@ $xxl-page-max-width-center: ($xxl-page-max-width - 40px);
 ### **依据设备横竖屏及宽高特点** 
 
 |设备 |网页宽高 |UI 模式 |
-|:----|:----|:----:|:----|:----:|:----|
+|:----:|:----:|:----:|
 |手机 iPhone11 pro max |414x896 |Mobile |
 |iPad mini 7.9 寸 |1024x768 |横屏 PC、竖屏 Mobile|
 |ipad 10.2 寸 |1080x810 |横屏 PC、竖屏 Mobile |
