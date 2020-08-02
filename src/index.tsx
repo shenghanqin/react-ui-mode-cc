@@ -3,13 +3,22 @@ import './constants.css'
 let mqlMedia = window.matchMedia('(orientation: portrait)') 
 
 // 输出当前屏幕模式
-const getUiMode = (mql: MediaQueryList | MediaQueryListEvent) => {
+const getUiMode = (mql: MediaQueryList | MediaQueryListEvent, widthMode: number) => {
 
-  let width = mql.matches ? Math.min(window.screen.width, window.screen.height) : Math.max(window.screen.width, window.screen.height)
+  // 竖屏
+  let isPortrait = mql.matches
 
-  if (width > 1000) return 'pc'
+  // 设备宽
+  let compareScreenWidth = isPortrait ? Math.min(window.screen.width, window.screen.height) : Math.max(window.screen.width, window.screen.height)
+  // 网页宽
+  let compareInnerWitdh = isPortrait ? Math.min(window.innerWidth, window.innerHeight) : Math.max(window.innerWidth, window.innerHeight)
 
-  return 'mobile'
+  // 当屏幕宽与网页宽一致并且大于宽度断点，才认为是pc
+  let uiMode = compareScreenWidth === compareInnerWitdh && compareScreenWidth > widthMode ? 'pc' : 'mobile'
+  
+  console.log('uiMode :>> ', compareScreenWidth, compareInnerWitdh, uiMode);
+
+  return uiMode
 
 }
 
@@ -79,7 +88,7 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
         isSingleMode = true
       } else {
         // 横竖屏切换的
-        uiMode = getUiMode(mqlMedia)
+        uiMode = getUiMode(mqlMedia, widthMode)
         isPCMode = getIsPcMode(uiMode)
       }
 
@@ -94,6 +103,7 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     componentDidMount() {
+      console.log('this.state.isSingleMode :>> ', this.state.isSingleMode);
       if (!this.state.isSingleMode) {
         mqlMedia.addListener(this.changeUiMode)
 
@@ -107,11 +117,12 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     changeUiMode = (mqlEvent: MediaQueryListEvent) => {
+      console.log('组件内 mqlEvent :>> ', mqlEvent);
       console.log('组件内 mqlEvent.matches :>> ', mqlEvent.matches);
-      console.log('"change" :>> ', mqlEvent);
-      let newUiMode = getUiMode(mqlEvent)
+      const { uiMode, widthMode } = this.state
+      let newUiMode = getUiMode(mqlEvent, widthMode)
 
-      if (newUiMode !== this.state.uiMode) {
+      if (newUiMode !== uiMode) {
         this.setState({
           uiMode: newUiMode,
           isPCMode: getIsPcMode(newUiMode)

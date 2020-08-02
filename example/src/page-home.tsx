@@ -34,8 +34,8 @@ class App extends React.Component<Props, State> {
     mqlMedia.removeListener(this.changeUiMode)
   }
   changeUiMode = (mql: MediaQueryListEvent) => {
-    console.log('changeUiMode mql :>> ', mql);
-    console.log(' :>> ', 'matches' in mql, '方向', mql.matches ? '竖屏' : '横屏');
+    console.log('页面内 changeUiMode mql :>> ', mql);
+    console.log('页面内 matches :>> ', 'matches' in mql, '方向', mql.matches ? '竖屏' : '横屏');
     this.setState({
       orientation: mql.matches ? '竖屏' : '横屏'
     })
