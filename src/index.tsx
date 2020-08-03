@@ -2,19 +2,26 @@ import * as React from 'react'
 
 let mqlMedia = window.matchMedia('(orientation: portrait)') 
 
+// Wait until innerheight changes, for max 120 frames
+// const orientationChanged = () => {
+//   const timeout = 120;
+//   return new window.Promise(function (resolve) {
+//     const go = (i: number, height0: number) => {
+//       window.innerWidth != height0 || i >= timeout ?
+//         resolve() :
+//         window.requestAnimationFrame(() => go(i + 1, height0));
+//     };
+//     go(0, window.innerWidth);
+//   })
+// }
+
 // 输出当前屏幕模式
-const getUiMode = (mql: MediaQueryList | MediaQueryListEvent, widthMode: number) => {
-  // 竖屏
-  let isPortrait = mql.matches
+const getUiMode = (widthMode: number) => {
+  let witdhMql = window.matchMedia(`(max-width: ${widthMode}px)`)
 
-  // 设备宽
-  let compareScreenWidth = isPortrait ? Math.min(window.screen.width, window.screen.height) : Math.max(window.screen.width, window.screen.height)
-  // 网页宽
-  let compareInnerWitdh = isPortrait ? Math.min(window.innerWidth, window.innerHeight) : Math.max(window.innerWidth, window.innerHeight)
-
-  // 当屏幕宽与网页宽一致并且大于宽度断点，才认为是pc
-  let uiMode = compareScreenWidth <= compareInnerWitdh + 150 && compareScreenWidth > widthMode ? 'pc' : 'mobile'
+  let uiMode = !witdhMql.matches ? 'pc' : 'mobile'
   
+  console.log('uiMode :>> ', uiMode);
   return uiMode
 }
 
@@ -39,7 +46,6 @@ interface UIProps {
 }
 
 interface UIState {
-  orientation: string
   /**
    * 单一模式。要么是pc，要么是Mobile
    */
@@ -82,12 +88,11 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
         isSingleMode = true
       } else {
         // 横竖屏切换的
-        uiMode = getUiMode(mqlMedia, widthMode)
+        uiMode = getUiMode(widthMode)
         isPCMode = getIsPcMode(uiMode)
       }
 
       this.state = {
-        orientation: '',
         isSingleMode,
         widthMode,
         uiMode: uiMode,
@@ -96,30 +101,38 @@ export function withUiMode(Cmp: React.ComponentType, options: OptionsProps) {
     }
 
     componentDidMount() {
+      console.log('this.state.isSingleMode :>> ', this.state.isSingleMode);
       if (!this.state.isSingleMode) {
-        mqlMedia.addListener(this.changeUiMode)
+        mqlMedia.addListener(this.mediaChange)
       }
     }
 
     componentWillUnmount() {
       if (!this.state.isSingleMode) {
-        mqlMedia.removeListener(this.changeUiMode)
+        mqlMedia.removeListener(this.mediaChange)
       }
     }
 
-    changeUiMode = (mqlEvent: MediaQueryListEvent) => {
+    // 横竖屏切换后，需要再监听一下 onResize 事件后判断 maxWidth 才是准确的
+    mediaChange = () => {
+      // console.log('mediaChange 2 :>> ', 2);
+      // orientationChanged().then(() => {
+        
+      // })
+      console.log('afterMediaChange 3 :>> ', 3);
       const { uiMode, widthMode } = this.state
-      // 屏幕切换后，宽高改变可能不会立即触发
-      setTimeout(() => {
-        let newUiMode = getUiMode(mqlEvent, widthMode)
-  
-        if (newUiMode !== uiMode) {
-          this.setState({
-            uiMode: newUiMode,
-            isPCMode: getIsPcMode(newUiMode)
-          })
-        }
-      }, 300);
+      let newUiMode = getUiMode(widthMode)
+
+      if (newUiMode !== uiMode) {
+        this.setState({
+          uiMode: newUiMode,
+          isPCMode: getIsPcMode(newUiMode)
+        })
+      }
+      // var afterMediaChange = () => {
+      //   window.removeEventListener('resize', afterMediaChange)
+      // };
+      // window.addEventListener('resize', afterMediaChange)
     }
 
     render() {
